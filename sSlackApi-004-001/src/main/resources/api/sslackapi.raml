@@ -1,0 +1,48 @@
+#%RAML 1.0
+title: sSlackApi
+description: Slack system REST API to POST a message as a new conversation to a known channel, or as a threaded reply in an existing conversation.
+baseUri: http://localhost:8081/api
+baseUriParameters:
+  # none
+version: 0.0.3
+types:
+  SlackMessageRequest:
+    type: object
+    properties:
+      channel:
+        required: true
+        type: string
+      text:
+        required: true
+        type: string
+      thread_ts:
+        required: false
+        type: string
+  Response:
+    type: object
+    properties:
+      ok:
+        required: true
+        type: boolean
+      channel:
+        required: true
+        type: string
+      ts:
+        required: false
+        type: string
+      text:
+        required: false
+        type: string
+
+/chat/message:
+  post:
+    description: "POST a message as a new conversation to a known channel, or as a threaded reply in an existing conversation."
+    displayName: "POST message as new conversation, or threaded reply by adding the thread_ts"
+    body:
+      application/json:
+        type: SlackMessageRequest
+    responses:
+        200:
+          body:
+            application/json:
+              type: Response
